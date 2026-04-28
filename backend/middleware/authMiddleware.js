@@ -10,10 +10,6 @@ const protect = async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      if (!process.env.JWT_SECRET) {
-        return res.status(500).json({ message: "JWT_SECRET not set" });
-      }
-
       token = req.headers.authorization.split(" ")[1];
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -22,7 +18,6 @@ const protect = async (req, res, next) => {
 
       return next();
     } catch (error) {
-      console.error("Auth error:", error.message);
       return res.status(401).json({ message: "Not authorized, token failed" });
     }
   }

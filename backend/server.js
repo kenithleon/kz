@@ -1,26 +1,24 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
 
-// load env only in local
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
-
-const connectDB = require("./config/db");
+const connectDB = require('./config/db');
 
 // routes
-const userRoutes = require("./routes/userRoutes");
-const productRoutes = require("./routes/productRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const checkoutRoutes = require("./routes/checkoutRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const uploadRoutes = require("./routes/uploadRoutes");
-const subscribeRoute = require("./routes/subscribeRoute");
-const adminRoutes = require("./routes/adminRoutes");
-const productAdminRoutes = require("./routes/productAdminRoutes");
-const adminOrderRoutes = require("./routes/adminOrderRoutes");
-const paypalRoutes = require("./routes/paypalRoutes");
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const checkoutRoutes = require('./routes/checkoutRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
+const subscribeRoute = require('./routes/subscribeRoute');
+const adminRoutes = require('./routes/adminRoutes');
+const productAdminRoutes = require('./routes/productAdminRoutes');
+const adminOrderRoutes = require('./routes/adminOrderRoutes');
+const paypalRoutes = require('./routes/paypalRoutes'); // ✅ FIXED
 const razorpayRoutes = require("./routes/razorpayRoutes");
+
+dotenv.config();
 
 const app = express();
 
@@ -28,40 +26,33 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// ✅ DB connection middleware (important for Vercel)
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    console.error("DB ERROR:", err.message);
-    return res.status(500).json({ error: "Database connection failed" });
-  }
-});
+// database
+connectDB();
 
 // test route
-app.get("/", (req, res) => {
-  res.send("WELCOME TO KICKLESS ZONE 🚀");
+app.get('/', (req, res) => {
+  res.send('WELCOME TO KICKLESS ZONE');
 });
 
 // api routes
-app.use("/api/users", userRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/checkout", checkoutRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/upload", uploadRoutes);
-app.use("/api/subscribe", subscribeRoute);
-app.use("/api/paypal", paypalRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/checkout', checkoutRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/subscribe', subscribeRoute);
+app.use('/api/paypal', paypalRoutes); // ✅ WORKS NOW
 app.use("/api/razorpay", razorpayRoutes);
 
-// admin routes
-app.use("/api/admin", adminRoutes);
-app.use("/api/admin/products", productAdminRoutes);
-app.use("/api/admin/orders", adminOrderRoutes);
+// admin
+app.use('/api/admin', adminRoutes);
+app.use('/api/admin/products', productAdminRoutes);
+app.use('/api/admin/orders', adminOrderRoutes);
 
-// ❌ DO NOT USE app.listen()
+// server
+const PORT = process.env.PORT || 9000;
 
-// ✅ export for Vercel
-const serverless = require("serverless-http");
-module.exports = serverless(app);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
