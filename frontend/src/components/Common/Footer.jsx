@@ -114,7 +114,7 @@ const Footer = () => {
         </div>
         {/*-- Footer Bottom --*/}
         <div className="container mx-auto mt-12 px-4 lg:px-0 border-t border-gray-200 pt-6">
-            <p className="text-gray-500 text-sm tracking-tighter text-center"> &copy; 2026, CompileTab. All Rights Reserved.</p>
+            <p className="text-gray-500 text-sm tracking-tighter text-center">&copy; 2026, Kickless Zone. All Rights Reserved</p>
 
         </div>
   </footer>

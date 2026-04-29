@@ -104,9 +104,9 @@ const Navbar = () => {
         </div>
 
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4">Menu</h2>
+          <h2 className="text-xl font-semibold mb-4 ">Menu</h2>
 
-          <nav className="space-y-4">
+          <nav className="space-y-4 flex flex-col font-bold">
             <Link to="/collections/all?gender=Men" onClick={toggleNavDrawer}>Men</Link>
             <Link to="/collections/all?gender=Women" onClick={toggleNavDrawer}>Women</Link>
             <Link to="/collections/all?category=Top Wear" onClick={toggleNavDrawer}>Top Wear</Link>
